@@ -1,0 +1,70 @@
+services:
+  # ── Gradio Web UI (interactive generation) ──────────────────────────────────
+  songgeneration-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: songgeneration:local
+    container_name: songgeneration-ui
+    restart: unless-stopped
+    # GPU access – requires Docker >= 19.03 and nvidia-container-toolkit
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    ports:
+      - "8081:8081"
+    volumes:
+      # Mount pre-downloaded model weights from the host into the container.
+      # Create these directories and download the weights before running
+      # (see USAGE.md Section 3 for download commands).
+      - ./ckpt:/workspace/ckpt:ro
+      - ./third_party:/workspace/third_party:ro
+      # Mount the checkpoint directory matching the model name you downloaded.
+      # The directory name must match the command argument below exactly.
+      # Examples:
+      #   ./songgeneration_base_new   → command: ["songgeneration_base_new",   ...]
+      #   ./songgeneration_base_full  → command: ["songgeneration_base_full",  ...]
+      #   ./songgeneration_large      → command: ["songgeneration_large",      ...]
+      #   ./songgeneration_v2_large   → command: ["songgeneration_v2_large",   ...]
+      - ./songgeneration_v2_large:/workspace/songgeneration_v2_large:ro
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - TRANSFORMERS_CACHE=/workspace/third_party/hub
+    # The checkpoint directory name is passed as the entrypoint argument.
+    command: ["songgeneration_v2_large"]
+
+  # ── CLI Batch Generation (non-interactive) ────────────────────────────────
+  # Run one-off batch generation:
+  #   docker compose run --rm songgeneration-cli songgeneration_v2_large sample/lyrics.jsonl /output
+  songgeneration-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: songgeneration:local
+    container_name: songgeneration-cli
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    volumes:
+      - ./ckpt:/workspace/ckpt:ro
+      - ./third_party:/workspace/third_party:ro
+      - ./songgeneration_v2_large:/workspace/songgeneration_v2_large:ro
+      # Mount sample inputs and a host directory for outputs:
+      - ./sample:/workspace/sample:ro
+      - ./outputs:/workspace/outputs
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - TRANSFORMERS_CACHE=/workspace/third_party/hub
+    entrypoint: ["bash", "generate.sh"]
+    # Default: generate from sample lyrics; override at runtime as needed.
+    command: ["songgeneration_v2_large", "sample/lyrics.jsonl", "outputs/"]
+    profiles:
+      - cli
