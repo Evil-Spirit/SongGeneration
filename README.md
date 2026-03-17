@@ -4,10 +4,12 @@
 
 #### SongGeneration 2
 
-[![Project Page](https://img.shields.io/badge/Project%20Page-GitHub-blue)](https://github.com/tencent-ailab/songgeneration) [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue)](https://huggingface.co/tencent/SongGeneration) [![Live Playground](https://img.shields.io/badge/Live%20PlayGround-Demo-orange)](https://huggingface.co/spaces/waytan22/SongGeneration-LeVo) [![Samples](https://img.shields.io/badge/Audio%20Samples-Page-green)](https://levo-demo.github.io/levo_v2_demo/)
+[![Project Page](https://img.shields.io/badge/Project%20Page-GitHub-blue)](https://github.com/tencent-ailab/songgeneration) [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue)](https://huggingface.co/tencent/SongGeneration) [![Live Playground](https://img.shields.io/badge/Live%20PlayGround-Demo-orange)](https://huggingface.co/spaces/waytan22/SongGeneration-LeVo) [![Samples](https://img.shields.io/badge/Audio%20Samples-Page-green)](https://levo-demo.github.io/levo_v2_demo/) [![Usage Guide](https://img.shields.io/badge/Usage%20Guide-Detailed-brightgreen)](USAGE.md)
 
 #### SongGeneration (old version)
 [![Technical Report](https://img.shields.io/badge/Technical%20Report-Arxiv-red)](https://arxiv.org/abs/2506.07520) [![Samples](https://img.shields.io/badge/Audio%20Samples-Page-green)](https://levo-demo.github.io/)
+
+📖 **New to this project? See the [Detailed Usage Guide (USAGE.md)](USAGE.md)** for step-by-step instructions covering installation, Docker setup, model download, CLI usage, the Gradio Web UI, input format, and troubleshooting.
 
 🚀 We introduce LeVo 2 (SongGeneration 2), an open-source music foundation model designed to shatter the ceiling of open-source AI music by achieving true commercial-grade generation. 
 
